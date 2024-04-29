@@ -1,5 +1,24 @@
-# ESP32-Motorized-Stage-driver
- The program for driving the electric slide table using ESP32. The upper computer uses Python + PySide6 to build GUI, realizing control of the slide table movement through WIFI and USB. ESP32 is programmed using MicroPython. Synchronous triggering with Basler is also implemented simultaneously.
+# 分支 Main2
+修复了main分支输出PWM频率较低的问题（软件模拟的，所以只能到500Hz 运动台会抖）
+在这里，使用硬件定时器触发中断，精确控制PWM方波的频率和数量
 
+# 上位机程序
+使用Pyside6编写 用到了Pyqtgraph的函数来动态加载UI  除此之外没有使用其他特殊的包
 
-**Comming Soon**
+# 消息传递
+- 串口传字符串，ESP32收到消息后进行解析
+- 传送的格式为： 指令码,参数1，参数2
+- 命令输出PWM方波时发送  11,频率,方波数
+- 命令方向PIN的电平 仅发送  12 或者 13  对应 高和低两个状态
+
+# 引脚定义 
+- 13 用于PWM输出
+- 14 用于方向控制
+
+# 接线
+共阴接法：
+- 13 接PWMin
+- 14 接DIRin
+- ENA 不接
+
+驱动和ESP32 共地
